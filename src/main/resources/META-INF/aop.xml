@@ -1,0 +1,7 @@
+<aspectj>
+  <aspects>
+    <aspect name="com.arajit.aspect.Log4j2Aspect"/>
+  </aspects>
+  <weaver options="-verbose -showWeaveInfo -debug">
+  </weaver>
+</aspectj>
