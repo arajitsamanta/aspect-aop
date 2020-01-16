@@ -1,31 +1,29 @@
 package com.arajit.aspect;
 
-import java.util.function.Supplier;
+import org.apache.logging.log4j.util.Supplier;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 
 @Aspect
 public class Log4j2Aspect {
-
-  @Before("execution(* org.apache.logging.log4j.Logger.*(*))")
-  public void methodCallWithoutSupplierArgument(JoinPoint thisJoinPoint) throws Exception {
+  @Before("execution(* org.apache.logging.log4j.Logger.*(*)) && args(message)")
+  public void methodCallWithoutSupplierArgument(JoinPoint thisJoinPoint, Object message) throws Exception {
     System.out.println("methodCallWithoutSupplierArgument: " + thisJoinPoint);
-    Object[] args = thisJoinPoint.getArgs();
-    for (int i = 0; i < args.length; i++) {
-      System.out.println("arsg:" + args[i]);
-    }
+    System.out.println("  message: " + message);
   }
 
-  @Before("execution(public * org.apache.logging.log4j.Logger.*(*)) && args(supplier)")
-  public void methodCallWitSupplierArgument(JoinPoint thisJoinPoint, Supplier<?> supplier)
-      throws Exception {
-    System.out.println("methodCallWitSupplierArgument: " + thisJoinPoint + " -> " + supplier);
-    Object obj = thisJoinPoint.getArgs();
+  @Before("execution(* org.apache.logging.log4j.Logger.*(*)) && args(messageSupplier)")
+  public void methodCallWithSupplierArgument(JoinPoint thisJoinPoint, Supplier messageSupplier) throws Exception {
+    Object message = messageSupplier/*.get()*/;  // no 'get()' call anymore
+    System.out.println("methodCallWithSupplierArgument: " + thisJoinPoint);
+    System.out.println("  message: " + message);
+  }
 
-    Object[] args = thisJoinPoint.getArgs();
-    for (int i = 0; i < args.length; i++) {
-      System.out.println("arsg:" + args[i]);
-    }
+  @AfterReturning(pointcut = "call(public * org.apache.logging.log4j.util.Supplier+.get())", returning = "result")
+  public void supplierEvaluated(JoinPoint thisJoinPoint, Object result) throws Exception {
+    System.out.println("supplierEvaluated: " + thisJoinPoint);
+    System.out.println("  result: " + result);
   }
 }
