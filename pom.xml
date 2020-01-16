@@ -15,8 +15,7 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <java.version>1.8</java.version>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <aspectj.version>1.8.13</aspectj.version>
+    <aspectj.version>1.9.5</aspectj.version>
   </properties>
 
   <dependencies>
@@ -100,55 +99,21 @@
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>aspectj-maven-plugin</artifactId>
-        <version>1.11</version>
-        <dependencies>
-          <dependency>
-            <groupId>org.aspectj</groupId>
-            <artifactId>aspectjtools</artifactId>
-            <version>1.8.13</version>
-          </dependency>
-        </dependencies>
-        <configuration>
-          <complianceLevel>${java.version}</complianceLevel>
-          <source>${java.version}</source>
-          <target>${java.version}</target>
-          <encoding>${project.build.sourceEncoding}</encoding>
-          <forceAjcCompile>false</forceAjcCompile>
-          <showWeaveInfo>true</showWeaveInfo>
-          <Xlint>ignore</Xlint>
-          <verbose>true</verbose>
-          <!--          <weaveDependencies>-->
-          <!--&lt;!&ndash;            <weaveDependency>&ndash;&gt;-->
-          <!--&lt;!&ndash;              <groupId>org.apache.logging.log4j</groupId>&ndash;&gt;-->
-          <!--&lt;!&ndash;              <artifactId>log4j-core</artifactId>&ndash;&gt;-->
-          <!--&lt;!&ndash;            </weaveDependency>&ndash;&gt;-->
-          <!--&lt;!&ndash;            <weaveDependency>&ndash;&gt;-->
-          <!--&lt;!&ndash;              <groupId>org.apache.logging.log4j</groupId>&ndash;&gt;-->
-          <!--&lt;!&ndash;              <artifactId>log4j-api</artifactId>&ndash;&gt;-->
-          <!--&lt;!&ndash;            </weaveDependency>&ndash;&gt;-->
-          <!--          </weaveDependencies>-->
-        </configuration>
-        <executions>
-          <execution>
-            <phase>process-resources</phase>
-            <goals>
-              <goal>compile</goal>
-              <goal>test-compile</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>2.22.2</version>
         <configuration>
           <argLine>
-            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/1.8.13/aspectjweaver-1.8.13.jar
+            -javaagent:${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar
           </argLine>
         </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

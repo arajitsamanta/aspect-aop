@@ -17,4 +17,12 @@ public class LogMessage {
   public String getMessage() {
     return message;
   }
+
+  @Override
+  public String toString() {
+    return "LogMessage{" +
+      "eventType='" + eventType + '\'' +
+      ", message='" + message + '\'' +
+      '}';
+  }
 }
